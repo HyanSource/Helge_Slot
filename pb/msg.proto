@@ -16,5 +16,6 @@ message Result {
     repeated int32 Paylinesnum=2;
     repeated int32 Paylinescount=3;
     int32 Odds=4;
+    Money Money=5;
 }
 
