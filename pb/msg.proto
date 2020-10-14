@@ -1,6 +1,11 @@
 syntax = "proto3";
 package pb;
 
+//金錢
+message Money {
+    int32 Money=1;
+}
+//下注
 message Play {
     int32 Bet=1;
 }
