@@ -37,13 +37,16 @@ func (t *Play) Handle(request hinterface.IRequest) {
 
 	result := slot.PlayGame.Result(slot.PlayGame.GetTable())
 
-	money := int32(p.(*player.Player).Money) - play.Bet + play.Bet*result.Odds
+	winmoney := play.Bet * result.Odds
+
+	money := int32(p.(*player.Player).Money) - play.Bet + winmoney
 	p.(*player.Player).Money = int(money)
 	result.Money = &pb.Money{Money: money}
 
 	{
 		Metrics.AllPlayCounter.Inc(1)
-		Metrics.WinMoneyCounter.Inc(1)
+		Metrics.WinMoneyCounter.Inc(int64(winmoney))
+		Metrics.RTPGauge.Update(0)
 	}
 
 	r, err := proto.Marshal(result)
