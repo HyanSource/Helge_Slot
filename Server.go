@@ -3,12 +3,18 @@ package main
 import (
 	"fmt"
 
+	"github.com/HyanSource/Helge_Slot/metrics"
+
 	"github.com/HyanSource/Helge/hinterface"
 	"github.com/HyanSource/Helge/hnet"
 	"github.com/HyanSource/Helge_Slot/pb"
 	"github.com/HyanSource/Helge_Slot/player"
 	"github.com/HyanSource/Helge_Slot/slot"
 	"github.com/golang/protobuf/proto"
+)
+
+var (
+	Metrics *metrics.LocalMetrics
 )
 
 type Play struct {
@@ -35,6 +41,11 @@ func (t *Play) Handle(request hinterface.IRequest) {
 	p.(*player.Player).Money = int(money)
 	result.Money = &pb.Money{Money: money}
 
+	{
+		Metrics.AllPlayCounter.Inc(1)
+		Metrics.WinMoneyCounter.Inc(1)
+	}
+
 	r, err := proto.Marshal(result)
 	if err != nil {
 		fmt.Println(err)
@@ -56,6 +67,9 @@ func StartConnection(conn hinterface.IConnection) {
 }
 
 func main() {
+
+	Metrics = metrics.NewLocalMetrics()
+
 	s := hnet.NewServer()
 	s.GetHook().SetHook("start", StartConnection)
 	s.AddRouter(100, &Play{}) //遊玩業務
