@@ -31,9 +31,13 @@ func (t *Play) Handle(request hinterface.IRequest) {
 
 	result := slot.PlayGame.Result(slot.PlayGame.GetTable())
 
-	money := int32(p.(*player.Player).Money) - play.Bet + play.Bet*result.Odds
+	winmoney := play.Bet * result.Odds
+
+	money := int32(p.(*player.Player).Money) - play.Bet + winmoney
 	p.(*player.Player).Money = int(money)
 	result.Money = &pb.Money{Money: money}
+
+	result.WinMoney = winmoney
 
 	r, err := proto.Marshal(result)
 	if err != nil {
