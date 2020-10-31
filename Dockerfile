@@ -5,7 +5,7 @@ WORKDIR /server
 # 加入檔案
 ADD . /server
 # 進入資料夾和建構執行檔案
-RUN cd /server && go build
+RUN cd /server && go build Server.go
 # 阜號
 EXPOSE 8124
 # 執行檔案
