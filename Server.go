@@ -42,6 +42,7 @@ func (t *Play) Handle(request hinterface.IRequest) {
 	money := int32(p.(*player.Player).Money) - play.Bet + winmoney
 	p.(*player.Player).Money = int(money)
 	result.Money = &pb.Money{Money: money}
+	result.WinMoney = winmoney
 
 	// {
 	// 	Metrics.AllPlayCounter.Inc(1)
