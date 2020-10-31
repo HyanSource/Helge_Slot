@@ -43,11 +43,11 @@ func (t *Play) Handle(request hinterface.IRequest) {
 	p.(*player.Player).Money = int(money)
 	result.Money = &pb.Money{Money: money}
 
-	{
-		Metrics.AllPlayCounter.Inc(1)
-		Metrics.WinMoneyCounter.Inc(int64(winmoney))
-		Metrics.RTPGauge.Update(0)
-	}
+	// {
+	// 	Metrics.AllPlayCounter.Inc(1)
+	// 	Metrics.WinMoneyCounter.Inc(int64(winmoney))
+	// 	Metrics.RTPGauge.Update(0)
+	// }
 
 	r, err := proto.Marshal(result)
 	if err != nil {
