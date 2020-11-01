@@ -47,6 +47,8 @@ func (t *Play) Handle(request hinterface.IRequest) {
 		Metrics.AllPlayCounter.Inc(1)
 		Metrics.WinMoneyCounter.Inc(int64(winmoney))
 		Metrics.RTPGauge.Update(0)
+
+		Metrics.Log()
 	}
 
 	r, err := proto.Marshal(result)
@@ -71,6 +73,7 @@ func StartConnection(conn hinterface.IConnection) {
 
 func main() {
 
+	//創建監控統計
 	Metrics = metrics.NewLocalMetrics()
 
 	s := hnet.NewServer()
