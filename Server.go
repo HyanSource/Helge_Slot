@@ -42,14 +42,13 @@ func (t *Play) Handle(request hinterface.IRequest) {
 	money := int32(p.(*player.Player).Money) - play.Bet + winmoney
 	p.(*player.Player).Money = int(money)
 	result.Money = &pb.Money{Money: money}
+	result.WinMoney = winmoney
 
-	{
-		Metrics.AllPlayCounter.Inc(1)
-		Metrics.WinMoneyCounter.Inc(int64(winmoney))
-		Metrics.RTPGauge.Update(0)
-
-		Metrics.Log()
-	}
+	// {
+	// 	Metrics.AllPlayCounter.Inc(1)
+	// 	Metrics.WinMoneyCounter.Inc(int64(winmoney))
+	// 	Metrics.RTPGauge.Update(0)
+	// }
 
 	r, err := proto.Marshal(result)
 	if err != nil {
